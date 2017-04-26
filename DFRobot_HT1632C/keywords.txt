@@ -1,0 +1,51 @@
+#######################################
+# Syntax Highlighting for HT1632
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DFRobot_HT1632C			KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin			KEYWORD2
+clrPixel		KEYWORD2
+setPixel	KEYWORD2
+
+isBlinkEnable	KEYWORD2
+inLowpower	KEYWORD2
+isLedOn			KEYWORD2
+setPwm		KEYWORD2
+
+clearScreen			KEYWORD2
+fillScreen		KEYWORD2
+writeScreen		KEYWORD2
+
+drawLine			KEYWORD2
+clrLine		KEYWORD2
+getTextWidth		KEYWORD2
+
+drawText			KEYWORD2
+setCursor		KEYWORD2
+setFont		KEYWORD2
+
+print		KEYWORD2
+
+FONT5X4		KEYWORD2
+FONT8X4		KEYWORD2
+
+FONT_8X4	KEYWORD2
+FONT_8X4_END	KEYWORD2
+ONT_8X4_HEIGHT	KEYWORD2
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+COM_SIZE		LITERAL1
+OUT_SIZE		LITERAL1
