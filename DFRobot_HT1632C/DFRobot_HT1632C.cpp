@@ -109,7 +109,7 @@ const byte FONT_8X4 [] PROGMEM = {
   0b00000001, 0b00000010,                                       // ,				43
   0b00001000, 0b00001000, 0b00001000,                           // -				46
   0b00000001,                                                   // .				47
-  0b00000011, 0b00001100, 0b00110000, 0b11000000,               // /
+  0b00000011, 0b00001100, 0b00110000, 0b11000000,               /* / */
   0b01111110, 0b10110001, 0b10001101, 0b01111110,               // 0
   0b01000001, 0b11111111, 0b00000001,                           // 1
   0b01000011, 0b10000101, 0b10001001, 0b01110001,               // 2
@@ -154,7 +154,7 @@ const byte FONT_8X4 [] PROGMEM = {
   0b11000000, 0b00110000, 0b00001111, 0b00110000, 0b11000000,   // Y
   0b10000011, 0b10001101, 0b10110001, 0b11000001,               // Z
   0b11111111, 0b10000001,                                       // [
-  0b11000000, 0b00110000, 0b00001100, 0b00000011,               // \
+  0b11000000, 0b00110000, 0b00001100, 0b00000011,               /* \ */
   0b10000001, 0b11111111,                                       // ]
   0b01000000, 0b10000000, 0b01000000,                           // ^
   0b00000001, 0b00000001, 0b00000001, 0b00000001,               // _
@@ -520,7 +520,7 @@ void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t he
 
 void DFRobot_HT1632C::drawText(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space){
 	int curr_x = x;
-	char i = 0;
+	unsigned int i = 0;
 	char currchar;
 	
 	if(y + font_height < 0 || y >= HEIGHTSIZE){
@@ -695,7 +695,7 @@ void DFRobot_HT1632C::print(unsigned int n, int base)
 }
 
 void DFRobot_HT1632C::print(double number, uint8_t digits){
-	char index = 0;
+  int index = 0;
 	char buf[10] = {'\0'};
 	
   if (isnan(number)) return print("nan");
