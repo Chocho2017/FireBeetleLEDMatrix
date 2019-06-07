@@ -34,6 +34,10 @@ setCursor		KEYWORD2
 setFont		KEYWORD2
 
 print		KEYWORD2
+startScrolling		KEYWORD2
+doScrolling		KEYWORD2
+endScrolling		KEYWORD2
+
 
 FONT5X4		KEYWORD2
 FONT8X4		KEYWORD2
