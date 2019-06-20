@@ -37,11 +37,6 @@ void loop() {
     ht1632c.startScrolling(msg[msgCnt]);
   }
   
-  if (millis() - ledTimer > 1000) {
-    ht1632c.isLedOn(ledState);
-    ledState=!ledState;  
-  }
-
   ht1632c.doScrolling (50-msgCnt*15);   // scrolling with variable speed 
 
 }
