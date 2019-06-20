@@ -113,23 +113,31 @@ public:
 	void print(const char str[], uint16_t speed);
 	void printStr(const char str[], uint8_t value=0);
 
+  void startScrolling(char *str);
+  void doScrolling(uint16_t speed);
+  void endScrolling();
+
 private:
 	char* strBuffer;
-	uint8_t length;
-	uint8_t xIndex;
-  uint8_t width, height;
+	uint16_t length;
+	uint16_t xIndex;
+  uint16_t width, height;
 	uint8_t xCoordinate, yCoordinate, fontValue;
 	uint8_t data_t, cs_t, wr_t, rd_t;
 	uint8_t matrix[24]; //24*8/8
 	char* matrices;
+  unsigned long scrollTimestamp;
+  uint16_t scrollPos;
+
 	void writeCommand(uint8_t cmd);
 	void writeBits(uint16_t data, uint8_t length);
 	void writeRAM(uint8_t addr, uint8_t data);
-	
+
+  
 	void doLength(const char text[]);
 	
-	void drawImage(const byte * img, uint8_t width_t, uint8_t height_t, int8_t x, int8_t y, int img_offset);
-	void drawImageStr(const byte * img, uint8_t width_t, uint8_t height_t, int8_t x, int8_t y, int img_offset);
+	void drawImage(const byte * img, uint8_t width_t, uint8_t height_t, uint16_t x, uint16_t y, uint16_t img_offset);
+	void drawImageStr(const byte * img, uint8_t width_t, uint8_t height_t, uint16_t x, uint16_t y, uint16_t img_offset);
 	int getCharWidth(int font_end [], uint8_t font_height, uint8_t font_index);
 	int getCharOffset(int font_end [], uint8_t font_index);
 };

@@ -215,6 +215,7 @@ void DFRobot_HT1632C::begin(){
 	xCoordinate = 0;
 	yCoordinate = 0;
 	fontValue = FONT8X4;
+  matrices=NULL;
 }
 
 
@@ -434,13 +435,13 @@ void DFRobot_HT1632C::clrLine(uint8_t xStart, uint8_t yStart, uint8_t xStop, uin
   }
 }
 
-void DFRobot_HT1632C::drawImage(const byte * img, uint8_t width_t, uint8_t height_t, int8_t x, int8_t y, int img_offset){
+void DFRobot_HT1632C::drawImage(const byte * img, uint8_t width_t, uint8_t height_t, uint16_t x, uint16_t y, uint16_t img_offset){
 	uint8_t bytesPerColumn = (height_t >> 3) + ((height_t & 0b111)?1:0);
 	if(y + height_t < 0 || x + width_t < 0 || y > height || x > width){
 		return;
 	}
-	uint8_t dst_x = x;
-	uint8_t src_x = 0;
+	uint16_t dst_x = x;
+	uint16_t src_x = 0;
 	while(src_x < width_t){
 		if(dst_x < 0){
 			src_x++;
@@ -449,8 +450,8 @@ void DFRobot_HT1632C::drawImage(const byte * img, uint8_t width_t, uint8_t heigh
 		}else if(dst_x >= width){
 			break;
 		}
-		uint8_t src_y = 0;
-		uint8_t dst_y = y;
+		uint16_t src_y = 0;
+		uint16_t dst_y = y;
 		while(src_y < height_t){
 			if(dst_y < 0){
 				src_y -= dst_y;
@@ -476,13 +477,13 @@ void DFRobot_HT1632C::drawImage(const byte * img, uint8_t width_t, uint8_t heigh
 	}
 }
 
-void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t height_t, int8_t x, int8_t y, int img_offset){
+void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t height_t, uint16_t x, uint16_t y, uint16_t img_offset){
 	uint8_t bytesPerColumn = (height_t >> 3) + ((height_t & 0b111)?1:0);
 	if(y + height_t < 0 || x + width_t < 0 || y > height || x > width){
 		return;
 	}
-	uint8_t dst_x = x;
-	uint8_t src_x = 0;
+	uint16_t dst_x = x;
+	uint16_t src_x = 0;
 	while(src_x < width_t){
 		if(dst_x < 0){
 			src_x++;
@@ -491,8 +492,8 @@ void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t he
 		}else if(dst_x >= width){
 			break;
 		}
-		uint8_t src_y = 0;
-		uint8_t dst_y = y;
+		uint16_t src_y = 0;
+		uint16_t dst_y = y;
 		while(src_y < height_t){
 			if(dst_y < 0){
 				src_y -= dst_y;
@@ -520,7 +521,7 @@ void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t he
 
 void DFRobot_HT1632C::drawText(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space){
 	int curr_x = x;
-	unsigned int i = 0;
+	uint16_t i = 0;
 	char currchar;
 	
 	if(y + font_height < 0 || y >= HEIGHTSIZE){
@@ -544,7 +545,7 @@ void DFRobot_HT1632C::drawText(const char text [], int x, int y, const byte font
 			break; 
 		}
 		
-		int chr_width = getCharWidth(font_end, font_height, currchar);
+		uint8_t chr_width = getCharWidth(font_end, font_height, currchar);
 		if(curr_x + chr_width + gutter_space >= 0){
 			drawImage(font, chr_width, font_height, curr_x, y,  getCharOffset(font_end, currchar));
 			for(uint8_t j = 0; j < gutter_space; ++j)
@@ -557,8 +558,8 @@ void DFRobot_HT1632C::drawText(const char text [], int x, int y, const byte font
 }
 
 void DFRobot_HT1632C::drawTextStr(const char text [], int x, int y, const byte font [], int font_end [], uint8_t font_height, uint8_t gutter_space){
-	int curr_x = x;
-	uint8_t i = 0;
+	uint16_t curr_x = x;
+	uint16_t i = 0;
 	char currchar;
 	
 	if(y + font_height < 0 || y >= HEIGHTSIZE){
@@ -581,7 +582,7 @@ void DFRobot_HT1632C::drawTextStr(const char text [], int x, int y, const byte f
 		if(curr_x >= WIDTHSIZE){
 			//break; 
 		}
-		int chr_width = getCharWidth(font_end, font_height, currchar);
+		uint8_t chr_width = getCharWidth(font_end, font_height, currchar);
 		if(curr_x + chr_width + gutter_space >= 0){
 			drawImageStr(font, chr_width, font_height, curr_x, y,  getCharOffset(font_end, currchar));
 			for(char j = 0; j < gutter_space; ++j)
@@ -613,7 +614,7 @@ int DFRobot_HT1632C::getCharOffset(int font_end [], uint8_t font_index) {
 
 int DFRobot_HT1632C::getTextWidth(const char text [], int font_end [], uint8_t font_height, uint8_t gutter_space) {
 	int wd = 0;
-	uint8_t i = 0;
+	uint16_t i = 0;
 	char currchar;
 	
 	while(true){  
@@ -766,13 +767,14 @@ void DFRobot_HT1632C::print(const char str[], uint16_t speed){
 	this->doLength(str);
 	
 	this->width = length;
+  if (matrices) free(matrices);
 	matrices = (char*)malloc(length+24);	
 	if(matrices == NULL)	return;
 	memset(matrices,'\0',length+24);
 
 	this->setCursorIndex(0,0);
 	this->printStr(str);	
-	for(uint8_t i=1; i<length+24;i++){	
+	for(uint16_t i=1; i<length+24;i++){	
 		for(uint8_t j = xIndex; j<24-xIndex; j++){
 			matrix[j] = '\0';
 		}
@@ -789,9 +791,56 @@ void DFRobot_HT1632C::print(const char str[], uint16_t speed){
   matrices = NULL; 
 }
 
+
+void DFRobot_HT1632C::startScrolling(char * str){
+  this->scrollPos=0;
+  this->scrollTimestamp=millis();
+
+  this->length = strlen(str)*5;
+  this->doLength(str);  
+  this->width = length;
+
+  if (matrices) free(matrices);
+  matrices = (char*)malloc(length+24);  
+  if(matrices == NULL)  return;
+  memset(matrices,'\0',length+24); 
+
+  this->setCursorIndex(0,0);
+  this->printStr(str);  
+}
+
+void DFRobot_HT1632C::doScrolling(uint16_t speed){
+
+  if (matrices==NULL) return;
+  if (millis() - this->scrollTimestamp >= speed) {
+    this->scrollTimestamp=millis();
+    this->scrollPos++;
+    if (this->scrollPos >= length+24) 
+      this->scrollPos=0;
+  
+    uint16_t i=this->scrollPos;
+    for(uint16_t j = xIndex; j<24-xIndex; j++){
+      matrix[j] = '\0';
+    }
+    
+    if(i <= 24-xIndex){
+      memcpy(&matrix[24-i], &matrices[0], i);
+    }else{
+      memcpy(&matrix[xIndex], &matrices[i-24+xIndex], 24-xIndex); 
+    }
+    this->writeScreen();
+  }
+}
+
+void DFRobot_HT1632C::endScrolling(){
+  free(matrices);
+  matrices = NULL; 
+}
+
+
 void DFRobot_HT1632C::doLength(const char text[]){
 	char currchar;
-	uint8_t i = 0;
+	uint16_t i = 0;
 	
 	while(true){  
 		if (text[i] == '\0') {
