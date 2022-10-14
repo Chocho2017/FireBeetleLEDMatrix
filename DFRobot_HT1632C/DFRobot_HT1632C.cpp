@@ -460,8 +460,8 @@ void DFRobot_HT1632C::drawImage(const byte * img, uint8_t width_t, uint8_t heigh
 				break;
 			}
 			
-			uint8_t copyInNextStep = 8 - max((src_y & 0b111), (dst_y & 0b111));
-			copyInNextStep = min(copyInNextStep, (height - src_y));
+			uint8_t copyInNextStep = 8 - _max((src_y & 0b111), (dst_y & 0b111));
+			copyInNextStep = _min(copyInNextStep, (height - src_y));
 			uint8_t dst_copyMask = (0b1 << copyInNextStep) - 1;
 			dst_copyMask <<= (8 - (dst_y & 0b111) - copyInNextStep);
 			uint8_t copyData = pgm_read_byte(&img[img_offset + (bytesPerColumn * src_x) + (src_y >> 3)]) << (src_y & 0b111);
@@ -502,8 +502,8 @@ void DFRobot_HT1632C::drawImageStr(const byte * img, uint8_t width_t, uint8_t he
 				break;
 			}
 			
-			uint8_t copyInNextStep = 8 - max((src_y & 0b111), (dst_y & 0b111));
-			copyInNextStep = min(copyInNextStep, (height - src_y));
+			uint8_t copyInNextStep = 8 - _max((src_y & 0b111), (dst_y & 0b111));
+			copyInNextStep = _min(copyInNextStep, (height - src_y));
 			uint8_t dst_copyMask = (0b1 << copyInNextStep) - 1;
 			dst_copyMask <<= (8 - (dst_y & 0b111) - copyInNextStep);
 			uint8_t copyData = pgm_read_byte(&img[img_offset + (bytesPerColumn * src_x) + (src_y >> 3)]) << (src_y & 0b111);
@@ -852,9 +852,4 @@ void DFRobot_HT1632C::doLength(const char text[]){
 		++i;
 	}
 }
-
-
-
-
-
 
